@@ -10,6 +10,7 @@ const LINE = '10000061'
 const LINE_POINT = '10000062'
 const LOC = '10000063'
 const POLYGON_AREA = '10000218'
+const SURF_VOL = '10000220'
 
 const entityStream = entityId => db.createReadStream({
   gt: entityId,
@@ -90,12 +91,16 @@ const mapLocations = async () => {
       sizeAngle: row[3]
     })
 
+    // Use the defining volume.
+    const surfaceVolume = row => acc[row[0]]
+
     const geometry = value => {
       if (value[GEO_POINT]) return point(value[GEO_POINT])
       else if (value[LINE]) return line()
       else if (value[POLYGON_AREA]) return polygonArea(value[POLYGON_AREA])
       else if (value[CORRIDOR_AREA]) return corridorArea(value[CORRIDOR_AREA])
       else if (value[FAN_AREA]) return fanArea(value[FAN_AREA])
+      else if (value[SURF_VOL]) return surfaceVolume(value[SURF_VOL])
       console.log('unsupported geometry', value)
     }
 
