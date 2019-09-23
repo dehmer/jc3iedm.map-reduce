@@ -3,10 +3,13 @@ const level = require('level')
 const db = level('db', { valueEncoding: 'json' })
 const subtypes = require('./ent_subt.json')
 
+const CORRIDOR_AREA = '10000214'
+const FAN_AREA = 10000048
 const GEO_POINT = '10000282'
 const LINE = '10000061'
 const LINE_POINT = '10000062'
 const LOC = '10000063'
+const POLYGON_AREA = '10000218'
 
 const entityStream = entityId => db.createReadStream({
   gt: entityId,
@@ -67,9 +70,32 @@ const mapLocations = async () => {
       coordinates: linePoints[pk].map(linePoint => acc[linePoint].coordinates)
     })
 
+    const polygonArea = row => ({
+      type: 'Polygon',
+      coordinates: [linePoints[row[0]].map(linePoint => acc[linePoint].coordinates)]
+    })
+
+    const corridorArea = row => ({
+      type: 'LineString',
+      coordinates: linePoints[row[1]].map(linePoint => acc[linePoint].coordinates),
+      width: row[0]
+    })
+
+    const fanArea = row => ({
+      type: 'Point',
+      coordinates: acc[row[4]].coordinates,
+      minRange: row[0],
+      maxRange: row[1],
+      startAngle: row[2],
+      sizeAngle: row[3]
+    })
+
     const geometry = value => {
       if (value[GEO_POINT]) return point(value[GEO_POINT])
-      else if (value[LINE]) return line(pk)
+      else if (value[LINE]) return line()
+      else if (value[POLYGON_AREA]) return polygonArea(value[POLYGON_AREA])
+      else if (value[CORRIDOR_AREA]) return corridorArea(value[CORRIDOR_AREA])
+      else if (value[FAN_AREA]) return fanArea(value[FAN_AREA])
       console.log('unsupported geometry', value)
     }
 
