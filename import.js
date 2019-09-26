@@ -3,11 +3,11 @@ const fs = require('fs')
 const {Transform, Writable} = require('stream')
 const level = require('level')
 const now = require('nano-time')
-const {ByteBuffer, UnderflowError} = require('./bytebuffer')
+const {ByteBuffer, UnderflowError} = require('./lib/bytebuffer')
 const argv = require('minimist')(process.argv.slice(2), {boolean: 't', string: 'd'})
 const input = argv._.length ? fs.createReadStream(argv._[0]) : process.stdin
 const db = level('db', { valueEncoding: 'json' })
-const fieldCount = require('./ent_pk_fields.json')
+const fieldCount = require('./mird/ent_pk_fields.json')
 
 // Decoder with internal accumulator.
 const accDecoder = fn => new Transform({
@@ -53,6 +53,7 @@ const x01Decoder = () => {
     const record = buffer.delimited('}', '`')
     const key = record.substring(0, fieldCount[entityId] * 21 - 1)
     const value = record.substring(fieldCount[entityId] * 21)
+    // TODO: value array; strip creator_id, update_seqnr_ord
     push([entityId, key, value])
     return buffer.fixed(1) === '}' ? decodeEntityId : decodeRecord
   }
