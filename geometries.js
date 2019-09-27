@@ -14,9 +14,8 @@ const reduce = streams => async () => {
   const linePoint = (acc, data) => {
     const pk = data.key.split(':')[1]
     const lineId = pk.split('|')[0]
-    const fields = data.value.split('|')
     acc[lineId] = acc[lineId] || []
-    acc[lineId][fields[0] - 1] = fields[1]
+    acc[lineId][data.value[0] - 1] = data.value[1]
     return acc
   }
 

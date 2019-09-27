@@ -52,8 +52,8 @@ const x01Decoder = () => {
   const decodeRecord = (buffer, push) => {
     const record = buffer.delimited('}', '`')
     const key = record.substring(0, fieldCount[entityId] * 21 - 1)
-    const value = record.substring(fieldCount[entityId] * 21)
-    // TODO: value array; strip creator_id, update_seqnr_ord
+    const value = record.substring(fieldCount[entityId] * 21).split('|')
+    value.length = value.length - 2
     push([entityId, key, value])
     return buffer.fixed(1) === '}' ? decodeEntityId : decodeRecord
   }

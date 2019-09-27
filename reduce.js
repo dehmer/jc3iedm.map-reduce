@@ -5,6 +5,7 @@ const streams = require('./lib/streams')(db)
 const subtypes = require('./subtypes')(streams)
 const geometries = require('./geometries')(streams)
 const reports = require('./reports')(streams)
+const { contxt_oi_assoc, act_contxt } = require('./context')(streams)
 
 const ready = []
 const tasks = {
@@ -19,6 +20,14 @@ const tasks = {
   reports: {
     reduce: reports.reduce,
     depends: ['subtypes']
+  },
+  contxt_oi_assoc: {
+    reduce: contxt_oi_assoc,
+    depends: []
+  },
+  act_contxt: {
+    reduce: act_contxt,
+    depends: []
   }
 }
 

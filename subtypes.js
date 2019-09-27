@@ -8,7 +8,7 @@ const inheritance = streams => async entityId => {
 
   const root = data => {
     const [entityId, pk] = data.key.split(':')
-    return [pk, kv(entityId, data.value.split('|'))]
+    return [pk, kv(entityId, data.value)]
   }
 
   const roots = await object(map(root)(stream(entityId)))
@@ -16,7 +16,7 @@ const inheritance = streams => async entityId => {
   // Attach child record to root with same primary key:
   const attach = (acc, data) => {
     const [entityId, pk] = data.key.split(':')
-    acc[pk][entityId] = data.value.split('|')
+    acc[pk][entityId] = data.value
     return acc
   }
 
