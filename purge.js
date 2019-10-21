@@ -2,6 +2,8 @@
 const level = require('level')
 const db = level('db', { valueEncoding: 'json' })
 const { stream } = require('./lib/streams')(db)
-const ent_id = require('./meta/ent_id')
 
-stream(`TARGET:${ent_id.AFFL}`).on('data', data => console.log(data.key, '=', data.value))
+const ops = []
+stream(`TARGET`)
+  .on('data', data => ops.push({type: 'del', key: data.key}))
+  .on('end', () => db.batch(ops))
