@@ -2,33 +2,9 @@
 const level = require('level')
 const db = level('db', { valueEncoding: 'json' })
 const streams = require('./lib/streams')(db)
-const subtypes = require('./subtypes')(streams)
-const geometries = require('./geometries')(streams)
-const reports = require('./reports')(streams)
-const { contxt_oi_assoc, act_contxt } = require('./context')(streams)
 
 const ready = []
 const tasks = {
-  subtypes: {
-    reduce: subtypes.reduce,
-    depends: []
-  },
-  geometries: {
-    reduce: geometries.reduce,
-    depends: ['subtypes']
-  },
-  reports: {
-    reduce: reports.reduce,
-    depends: ['subtypes']
-  },
-  contxt_oi_assoc: {
-    reduce: contxt_oi_assoc,
-    depends: []
-  },
-  act_contxt: {
-    reduce: act_contxt,
-    depends: []
-  }
 }
 
 const intersect = (a1, a2) => a1.filter(x => a2.includes(x))
