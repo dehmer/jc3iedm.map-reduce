@@ -3,10 +3,12 @@ const level = require('level')
 const db = level('db', { valueEncoding: 'json' })
 const streams = require('./lib/streams')(db)
 const subtypes = require('./lib/subtypes')
+const contxt_elmt = require('./lib/contxt_elmt')
 
 const ready = []
 const tasks = {
-  'subtype': { reduce: subtypes, depends: [] }
+  'subtype': { reduce: subtypes, depends: [] },
+  'contxt_elmt': { reduce: contxt_elmt, depends: [] }
 }
 
 const intersect = (a1, a2) => a1.filter(x => a2.includes(x))
