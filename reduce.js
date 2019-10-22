@@ -8,8 +8,8 @@ const contxt_oi_assoc = require('./lib/contxt_oi_assoc')
 
 const ready = []
 const tasks = {
-  // 'subtype': { reduce: subtypes, depends: [] },
-  // 'contxt_elmt': { reduce: contxt_elmt, depends: [] },
+  'subtype': { reduce: subtypes, depends: [] },
+  'contxt_elmt': { reduce: contxt_elmt, depends: [] },
   'contxt_oi_assoc': { reduce: contxt_oi_assoc, depends: []}
 }
 
