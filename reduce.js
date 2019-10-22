@@ -10,8 +10,8 @@ const loc = require('./lib/loc')
 const ready = []
 const tasks = {
   'subtype': { reduce: subtypes, depends: [] },
-  // 'contxt_elmt': { reduce: contxt_elmt, depends: [] },
-  // 'contxt_oi_assoc': { reduce: contxt_oi_assoc, depends: []},
+  'contxt_elmt': { reduce: contxt_elmt, depends: [] },
+  'contxt_oi_assoc': { reduce: contxt_oi_assoc, depends: []},
   'loc': { reduce: loc, depends: ['subtype'] }
 }
 
