@@ -6,13 +6,15 @@ const subtypes = require('./lib/subtypes')
 const contxt_elmt = require('./lib/contxt_elmt')
 const contxt_oi_assoc = require('./lib/contxt_oi_assoc')
 const loc = require('./lib/loc')
+const obj_item = require('./lib/obj_item')
 
 const ready = []
 const tasks = {
   'subtype': { reduce: subtypes, depends: [] },
   'contxt_elmt': { reduce: contxt_elmt, depends: [] },
   'contxt_oi_assoc': { reduce: contxt_oi_assoc, depends: []},
-  'loc': { reduce: loc, depends: ['subtype'] }
+  'loc': { reduce: loc, depends: ['subtype'] },
+  'obj_item': { reduce: obj_item, depends: ['loc', 'contxt_elmt', 'contxt_oi_assoc'] }
 }
 
 const intersect = (a1, a2) => a1.filter(x => a2.includes(x))
