@@ -4,13 +4,14 @@ SELECT DISTINCT mir_type, mir_sub_type FROM mig.mip_type ORDER BY 1, 2;
 SELECT * FROM mig.mip_type WHERE mir_sub_type IS NULL;
 
 
-DROP VIEW mig.sym_2525c_map;
+DROP TABLE mig.sym_2525c_map;
 CREATE TABLE mig.sym_2525c_map AS
-SELECT DISTINCT mir_type || ':' || mir_sub_type || ':' || descr_txt AS KEY,
+SELECT DISTINCT ent_id || ':' || descr_txt AS KEY,
        symbol_2525c_id AS VALUE
 FROM   mig.mip_type
 JOIN   mig.symbol_map USING (mir_id)
 JOIN   mig.symbol USING (symbol_id)
+JOIN   mird.ent ON ent.name_txt = mir_sub_type
 WHERE  mir_sub_type IS NOT NULL
 AND    symbol_2525c_id IS NOT NULL
 -- EXCLUDE METOC:
