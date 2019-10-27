@@ -4,6 +4,6 @@ const db = level('db', { valueEncoding: 'json' })
 const { stream } = require('./lib/streams')(db)
 
 const ops = []
-stream(`TARGET`)
+stream(`P01:`)
   .on('data', data => ops.push({type: 'del', key: data.key}))
   .on('end', () => db.batch(ops))

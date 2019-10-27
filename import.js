@@ -12,11 +12,12 @@ const writer = (db, batchSize = 500) => {
   const writeBatch = next => () => db.batch(ops, err => (ops.length = 0, next(err)))
   return new Writable({
     objectMode: true,
-    final: writeBatch,
     write (chunk, _, next) {
-      // TODO: make use of entity's nature: IE, DE, SE
-      ops.push({ type: 'put', key: `${chunk[0]}:${chunk[1]}`, value: chunk[2]})
+      ops.push({ type: 'put', key: `X01:${chunk[0]}:${chunk[1]}`, value: chunk[2] })
       ;(ops.length === batchSize ? writeBatch(next) : next)()
+    },
+    final (next) {
+      writeBatch(next)()
     }
   })
 }
