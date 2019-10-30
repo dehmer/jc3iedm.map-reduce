@@ -16,7 +16,7 @@ const tasks = {
   'contxt_oi_assoc': { reduce: contxt_oi_assoc, depends: [] },
   'geometry': { reduce: geometry, depends: ['subtypes'] },
   'obj_item': { reduce: obj_item, depends: ['geometry'] },
-  'feature': { reduce: feature, depends: [ /* 'obj_item' */ ] }
+  'feature': { reduce: feature, depends: ['obj_item'] }
 }
 
 const intersect = (a1, a2) => a1.filter(x => a2.includes(x))
